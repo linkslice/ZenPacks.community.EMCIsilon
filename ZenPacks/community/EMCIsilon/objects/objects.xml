@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <objects>
-<!-- ('', 'zport', 'dmd', 'Devices', 'Storage', 'EMC Isilon') -->
-<object id='/zport/dmd/Devices/Storage/EMC Isilon' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
+<!-- ('', 'zport', 'dmd', 'Devices', 'Storage') -->
+<object id='/zport/dmd/Devices/Storage' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
+<object id='EMC Isilon' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
 <property visible="True" type="string" id="zPythonClass" >
 ZenPacks.community.EMCIsilon.EMCIsilonDevice
 </property>
@@ -962,6 +963,28 @@ True
 </tomanycont>
 </object>
 </tomanycont>
+<tomanycont id='thresholds'>
+<object id='High Latency' module='Products.ZenModel.MinMaxThreshold' class='MinMaxThreshold'>
+<property type="string" id="eventClass" mode="w" >
+/Perf/Filesystem
+</property>
+<property type="int" id="severity" mode="w" >
+3
+</property>
+<property label="DataPoints" type="lines" id="dsnames" mode="w" >
+['latencyAverage_latencyAverage']
+</property>
+<property label="Enabled" type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="maxval" mode="w" >
+35000
+</property>
+<property type="int" id="escalateCount" mode="w" >
+3
+</property>
+</object>
+</tomanycont>
 <tomanycont id='graphDefs'>
 <object id='IOPS' module='Products.ZenModel.GraphDefinition' class='GraphDefinition'>
 <property type="int" id="height" mode="w" >
@@ -1264,7 +1287,7 @@ AVERAGE
 500
 </property>
 <property type="string" id="units" mode="w" >
-ms
+Î¼s
 </property>
 <property type="boolean" id="log" mode="w" >
 False
@@ -1273,10 +1296,10 @@ False
 False
 </property>
 <property type="int" id="miny" mode="w" >
-None
+-1
 </property>
 <property type="int" id="maxy" mode="w" >
-None
+-1
 </property>
 <property type="boolean" id="hasSummary" mode="w" >
 True
@@ -1285,6 +1308,17 @@ True
 5
 </property>
 <tomanycont id='graphPoints'>
+<object id='High Latency' module='Products.ZenModel.ThresholdGraphPoint' class='ThresholdGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+0
+</property>
+<property type="string" id="threshId" mode="w" >
+High Latency
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+</object>
 <object id='avg' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
 <property type="long" id="sequence" mode="w" >
 1
@@ -1309,64 +1343,6 @@ ${graphPoint/id}
 </property>
 <property type="string" id="dpName" mode="w" >
 latencyAverage_latencyAverage
-</property>
-<property type="string" id="cFunc" mode="w" >
-AVERAGE
-</property>
-</object>
-<object id='max' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
-<property type="long" id="sequence" mode="w" >
-2
-</property>
-<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
-LINE
-</property>
-<property type="long" id="lineWidth" mode="w" >
-2
-</property>
-<property type="boolean" id="stacked" mode="w" >
-False
-</property>
-<property type="string" id="format" mode="w" >
-%5.2lf%s
-</property>
-<property type="string" id="legend" mode="w" >
-${graphPoint/id}
-</property>
-<property type="long" id="limit" mode="w" >
--1
-</property>
-<property type="string" id="dpName" mode="w" >
-latencyMax_latencyMax
-</property>
-<property type="string" id="cFunc" mode="w" >
-AVERAGE
-</property>
-</object>
-<object id='min' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
-<property type="long" id="sequence" mode="w" >
-0
-</property>
-<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
-LINE
-</property>
-<property type="long" id="lineWidth" mode="w" >
-2
-</property>
-<property type="boolean" id="stacked" mode="w" >
-False
-</property>
-<property type="string" id="format" mode="w" >
-%5.2lf%s
-</property>
-<property type="string" id="legend" mode="w" >
-${graphPoint/id}
-</property>
-<property type="long" id="limit" mode="w" >
--1
-</property>
-<property type="string" id="dpName" mode="w" >
-latencyMin_latencyMin
 </property>
 <property type="string" id="cFunc" mode="w" >
 AVERAGE
@@ -2420,6 +2396,7 @@ AVERAGE
 </tomanycont>
 </object>
 </tomanycont>
+</object>
 </object>
 <!-- ('', 'zport', 'dmd', 'Mibs', 'mibs', 'ISILON-MIB') -->
 <object id='/zport/dmd/Mibs/mibs/ISILON-MIB' module='Products.ZenModel.MibModule' class='MibModule'>
