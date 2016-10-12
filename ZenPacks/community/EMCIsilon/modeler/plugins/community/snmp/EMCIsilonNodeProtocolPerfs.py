@@ -43,7 +43,8 @@ class EMCIsilonNodeProtocolPerfs(SnmpPlugin):
             log.debug('found protocol: %s at %s', name, snmpindex.strip('.'))
 
             rm.append(self.objectMap({
-                'id': self.prepId(name),
+                #'id': self.prepId(name),
+                'id': '-'.join(('proto', self.prepId(name))),
                 'title': name,
                 'snmpindex': snmpindex.strip('.'),
                 'protocol_op_count': row.get('protocolOpCount'),
