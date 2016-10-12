@@ -1287,7 +1287,7 @@ AVERAGE
 500
 </property>
 <property type="string" id="units" mode="w" >
-Î¼s
+ÃÂ¼s
 </property>
 <property type="boolean" id="log" mode="w" >
 False
