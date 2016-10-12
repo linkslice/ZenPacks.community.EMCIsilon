@@ -1,3 +1,4 @@
+from Products.DataCollector.plugins.CollectorPlugin import CommandPlugin
 from Products.DataCollector.plugins.CollectorPlugin import (
     SnmpPlugin, GetTableMap,
     )
@@ -6,6 +7,10 @@ from Products.DataCollector.plugins.CollectorPlugin import (
 class EMCIsilonNodeProtocolPerfs(SnmpPlugin):
     relname = 'emcisilon_nodeprotocolperfs'
     modname = 'ZenPacks.community.EMCIsilon.EMCIsilonNodeProtocolPerf'
+
+    deviceProperties = CommandPlugin.deviceProperties + (
+        'zEMCIsilonProtocolsIgnore', #Protocols to ignore when modeling.
+        )  
 
     snmpGetTableMaps = (
         GetTableMap(
@@ -33,11 +38,18 @@ class EMCIsilonNodeProtocolPerfs(SnmpPlugin):
 
     def process(self, device, results, log):
         emcisilon_nodeprotocolperfs = results[1].get('nodeprotocolPerfTable', {})
+
+        ignoreList = getattr(device, 'zEMCIsilonProtocolsIgnore')
+
         rm = self.relMap()
         for snmpindex, row in emcisilon_nodeprotocolperfs.items():
             name = row.get('protocolName')
             if not name:
                 log.warn('Skipping empty protocol')
+                continue
+
+            if name in ignoreList:
+                log.info("Ignored protocol %s skipped due to zproperty.", name)
                 continue
 
             log.debug('found protocol: %s at %s', name, snmpindex.strip('.'))
